@@ -2,10 +2,27 @@
 Pregunta
 ===========================================================================
 
-Para el archivo `data.tsv` genere una tabla que contenga la primera columna,
-la cantidad de elementos en la columna 2 y la cantidad de elementos en la 
-columna 3 separados por coma. La tabla debe estar ordenada por las 
-columnas 1, 2 y 3.
+Para el archivo `data.csv` escriba una consulta en Pig que genere la 
+siguiente salida:
+
+  Vivian@Hamilton
+  Karen@Holcomb
+  Cody@Garrett
+  Roth@Fry
+  Zoe@Conway
+  Gretchen@Kinney
+  Driscoll@Klein
+  Karyn@Diaz
+  Merritt@Guy
+  Kylan@Sexton
+  Jordan@Estes
+  Hope@Coffey
+  Vivian@Crane
+  Clio@Noel
+  Hope@Silva
+  Ayanna@Jarvis
+  Chanda@Boyer
+  Chadwick@Knight
 
 Escriba el resultado a la carpeta `output` del directorio actual. Para la 
 evaluación, pig sera eejcutado ejecutado en modo local:
@@ -14,8 +31,7 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
+A = LOAD './data.csv' using PigStorage(',') AS (id:int,  name:chararray, lastname:chararray,   date:chararray,  color:chararray, other:int);
+B = FOREACH A GENERATE CONCAT(name, '@', lastname);
 
-A = LOAD './data.tsv' AS (letter:chararray, setTuplesLetters:bag{}, arrayLetters:map[]);
-B = FOREACH A GENERATE letter, (int)COUNT(setTuplesLetters) AS totalC2 , (int) SIZE(arrayLetters) AS totalC3;
-C = ORDER B BY letter, totalC2, totalC3;
-STORE C INTO 'output/' using PigStorage(',');
+STORE B INTO 'output/' using PigStorage(',');
